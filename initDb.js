@@ -31,23 +31,7 @@ db.prepare(
 `
 ).run();
 
-db.prepare(
-  `
-   CREATE TABLE IF NOT EXISTS cart (
-      id INTEGER PRIMARY KEY,
-      ip_adress TEXT NOT NULL,
-      user_id  INTEGER,
-      item_id  INTEGER,
-      qnt      INTEGER,
-      bought   INTEGER,
-      creation_at TIMESTAMP,
-      FOREIGN KEY (item_id)
-      REFERENCES products (id),
-      FOREIGN KEY (user_id)
-      REFERENCES user (id) 
-         )
-`
-).run();
+
 
 db.prepare(
   `
@@ -59,10 +43,24 @@ db.prepare(
       created_at         TIMESTAMP,
       deleted_at         TIMESTAMP
       )
-      
 `
 ).run();
 
+db.prepare(
+  `
+   CREATE TABLE IF NOT EXISTS cart (
+      user_id  INTEGER,
+      item_id  INTEGER,
+      qnt      INTEGER,
+      bought   INTEGER,
+      creation_at TIMESTAMP NOT NULL,
+      FOREIGN KEY (item_id)
+      REFERENCES products (id),
+      FOREIGN KEY (user_id)
+      REFERENCES users (id) 
+         )
+`
+).run();
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS orders (
@@ -78,7 +76,6 @@ db.prepare(
       )
 `
 ).run();
-
 
 
 async function initData() {
