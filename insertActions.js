@@ -2,6 +2,7 @@ import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { getCart } from "./cartActions.js";
 import getCurrentDate from "./actualDate.js";
+import { getProductById } from "./productActions.js";
 
 export async function insertUser({
   id = null,
@@ -22,7 +23,7 @@ export async function insertUser({
       @created_at,
       @deleted_at
     )
-  `
+  `,
   ).run({
     id,
     email_address,
@@ -51,7 +52,7 @@ export function insertCard({ user_id, item_id, qnt }) {
       @bought,
       @creation_at
     )
-  `
+  `,
   ).run({
     user_id,
     item_id,
@@ -65,8 +66,23 @@ export function insertCard({ user_id, item_id, qnt }) {
 
 export async function insertOrder({ id, cart_id, user_id }) {
   const cart = await getCart(user_id, 0);
-  console.log(cart[0]);
-  const currentDate = getCurrentDate();
+
+  const getItemId = cart.map((item) => {
+    return item.item_id.toString();
+  });
+
+  let values = await getProductById({
+    tableCol: "price",
+    productRows: getItemId.join(),
+  });
+
+  let total = 0;
+  for (var i = 0; i < values.length; i++) {
+    total += values[i].price * cart[i].qnt;
+  }
+  console.log(`total`);
+  console.log(cart);
+
   // db.prepare(
   //   `
   //   INSERT INTO cart

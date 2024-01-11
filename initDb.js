@@ -17,7 +17,7 @@ db.prepare(
        category TEXT NOT NULL,
        thumbnail TEXT NOT NULL
     )
-`
+`,
 ).run();
 
 db.prepare(
@@ -28,10 +28,8 @@ db.prepare(
        FOREIGN KEY (item_id)
        REFERENCES products (id) 
          )
-`
+`,
 ).run();
-
-
 
 db.prepare(
   `
@@ -43,7 +41,7 @@ db.prepare(
       created_at         TIMESTAMP,
       deleted_at         TIMESTAMP
       )
-`
+`,
 ).run();
 
 db.prepare(
@@ -59,7 +57,7 @@ db.prepare(
       FOREIGN KEY (user_id)
       REFERENCES users (id) 
          )
-`
+`,
 ).run();
 db.prepare(
   `
@@ -74,9 +72,8 @@ db.prepare(
       FOREIGN KEY (user_id)
       REFERENCES users (id)
       )
-`
+`,
 ).run();
-
 
 async function initData() {
   const stmt = db.prepare(`
@@ -94,42 +91,23 @@ async function initData() {
       )
    `);
 
-const stmt2 = db.prepare(`
+  const stmt2 = db.prepare(`
       INSERT INTO images VALUES (
          @itemId,
          @image
       )
    `);
-    
+
   for (const product of products) {
     stmt.run(product);
-    for(const img in product.images){
+    for (const img in product.images) {
       stmt2.run({
         itemId: product.id,
         image: Object.values(product.images)[img],
       });
     }
   }
-
-   
 }
 //  initData();
 
-
-
-
-
-
-
-
-
 // console.log(Object.values(products[0].images)[0]);
-
-
-
-
-
-
-
-
-
