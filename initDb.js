@@ -12,7 +12,7 @@ db.prepare(
        price FLOAT NOT NULL,
        discountPercentage FLOAT NOT NULL,
        rating FLOAT NOT NULL,
-       stock TEXT NOT NULL,
+       stock INT NOT NULL,
        brand TEXT NOT NULL,
        category TEXT NOT NULL,
        thumbnail TEXT NOT NULL
@@ -67,15 +67,13 @@ db.prepare(
       user_id         INTEGER,
       paid_at         TIMESTAMP,
       total           REAL,
-      FOREIGN KEY (cart_id)
-      REFERENCES cart (id),
       FOREIGN KEY (user_id)
       REFERENCES users (id)
       )
-`,
+`
 ).run();
 
-async function initData() {
+async function initData({ fromDummy, product }) {
   const stmt = db.prepare(`
       INSERT INTO products VALUES (
          @id,
@@ -97,17 +95,24 @@ async function initData() {
          @image
       )
    `);
-
-  for (const product of products) {
-    stmt.run(product);
-    for (const img in product.images) {
-      stmt2.run({
-        itemId: product.id,
-        image: Object.values(product.images)[img],
-      });
+  if (fromDummy) {
+    for (const product of products) {
+      stmt.run(product);
+      for (const img in product.images) {
+        stmt2.run({
+          itemId: product.id,
+          image: Object.values(product.images)[img],
+        });
+      }
     }
+  } else {
+    stmt.run(product);
+    stmt2.run({
+      itemId: product.id,
+      image: Object.values(product.images)[img],
+    });
   }
 }
-//  initData();
+//  initData({fromDummy:true});
 
 // console.log(Object.values(products[0].images)[0]);

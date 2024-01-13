@@ -2,7 +2,13 @@ import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 
 import getCurrentDate from "./actualDate.js";
+import { insertUser } from "./insertActions.js";
 
+export async function newUser(user) {
+  const currentDate = getCurrentDate();
+
+  insertUser(user);
+}
 
 export async function getUser(email) {
   const user = db

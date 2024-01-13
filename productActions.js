@@ -1,6 +1,5 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
-import getCurrentDate from "./actualDate.js";
 
 export async function getProductById({ tableCol, productRows }) {
   let cols = tableCol || "*";
@@ -14,3 +13,10 @@ export async function getProductById({ tableCol, productRows }) {
   }
 }
 
+export async function updateProductQnt(cart, qnt) {
+  let stmt = db.prepare(
+    `UPDATE products  SET stock =((SELECT stock FROM products WHERE id =?)-?)  WHERE id  = ?`
+  );
+  let ret = stmt.run(cart,qnt,cart);
+}
+// updateProductQnt(10, 1);

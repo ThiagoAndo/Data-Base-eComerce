@@ -3,14 +3,11 @@ const db = sql("e-comerce.db");
 import { getCart } from "./cartActions.js";
 import getCurrentDate from "./actualDate.js";
 import { getProductById } from "./productActions.js";
+import { updateCartPurchased } from "./cartActions.js";
 
-export async function insertUser({
-  id = null,
-  email_address,
-  first_name,
-  last_name,
-}) {
+export async function insertUser(user) {
   const currentDate = getCurrentDate();
+
   db.prepare(
     `
     INSERT INTO users
@@ -23,23 +20,20 @@ export async function insertUser({
       @created_at,
       @deleted_at
     )
-  `,
+  `
   ).run({
-    id,
-    email_address,
-    first_name,
-    last_name,
+    ...user,
     created_at: currentDate,
     deleted_at: null,
   });
 }
 
-let ctrDate = 0;
-let currentDate = null;
-
-export function insertCard({ user_id, item_id, qnt }) {
-  if (ctrDate === 0) {
+export function insertCard({ creation_at, user_id, item_id, qnt }) {
+  let currentDate = "";
+  if (!creation_at) {
     currentDate = getCurrentDate();
+  } else {
+    currentDate = creation_at;
   }
   db.prepare(
     `
@@ -52,7 +46,7 @@ export function insertCard({ user_id, item_id, qnt }) {
       @bought,
       @creation_at
     )
-  `,
+  `
   ).run({
     user_id,
     item_id,
@@ -60,50 +54,49 @@ export function insertCard({ user_id, item_id, qnt }) {
     bought: 0,
     creation_at: currentDate,
   });
-
-  ctrDate++;
 }
 
-export async function insertOrder({ id, cart_id, user_id }) {
-  const cart = await getCart(user_id, 0);
+export async function insertOrder({ id = null, user_id }) {
+  let sum = 0;
+  let currentDate = getCurrentDate();
+  const cart = await getCart(user_id, 1);
 
-  const getItemId = cart.map((item) => {
-    return item.item_id.toString();
-  });
+  // const cart = await getCart(user_id, 0);
+  // let creation_at = cart[0].creation_at;
 
-  let values = await getProductById({
-    tableCol: "price",
-    productRows: getItemId.join(),
-  });
+  // const getItemId = cart.map((item) => {
+  //   return item.item_id.toString();
+  // });
 
-  let total = 0;
-  for (var i = 0; i < values.length; i++) {
-    total += values[i].price * cart[i].qnt;
-  }
-  console.log(`total`);
-  console.log(cart);
+  // let values = await getProductById({
+  //   tableCol: "price",
+  //   productRows: getItemId.join(),
+  // });
+
+  // for (var i = 0; i < values.length; i++) {
+  //   sum += values[i].price * cart[i].qnt;
+  // }
 
   // db.prepare(
   //   `
-  //   INSERT INTO cart
-  //     (id, user_id, item_id, qnt, bought, creation_at)
+  //   INSERT INTO orders
+  //     (invoice_id,cart_id, user_id, paid_at, total)
   //   VALUES (
   //     null,
   //     @cart_id,
   //     @user_id,
   //     @paid_at,
-  //     @bought,
   //     @total
   //   )
   // `
   // ).run({
   //   id,
-  //   cart_id,
+  //   cart_id: creation_at,
   //   user_id,
-  //   paid_at,
   //   paid_at: currentDate,
-  //   total: 0,
+  //   total: sum,
   // });
-}
 
-insertOrder({ user_id: 2 });
+  // updateCartPurchased(creation_at);
+  console.log;
+}
