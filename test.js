@@ -8,8 +8,9 @@ import { getCart } from "./cartActions.js";
 import { updateCart } from "./cartActions.js";
 import { getOrders } from "./ordersActions.js";
 import { newOrder } from "./ordersActions.js";
-import { getProductById } from "./productActions.js";
+import { getProductById, getCategories } from "./productActions.js";
 import { newUser } from "./userActions.js";
+import { insertOrder } from "./insertActions.js";
 
 // insertUser({
 //   id: 1,
@@ -18,14 +19,14 @@ import { newUser } from "./userActions.js";
 //   last_name: "Freitas",
 // });
 
-newUser({
-  id:null,
-  email_address: "ferreira.@frasw.comm",
-  first_name: "Sonia",
-  last_name: "ferreira",
-});
+  // newUser({
+  //   id: null,
+  //   email_address: "ando.norimar@gmail.com",
+  //   first_name: "Norimar",
+  //   last_name: "Ando",
+  // })
 
-// updateCart({
+  // updateCart({
 //   user_id: 2,
 //   item_id: 1,
 //   qnt: 3,
@@ -43,7 +44,7 @@ newUser({
 // });
 
 async function printU() {
-  const prt = await getUser("ferreira.Eduardo@g.comm");
+  const prt = await getUser("ando.norimar@gmail.com");
   console.log(prt);
 }
 
@@ -58,11 +59,18 @@ async function printO() {
 }
 
 async function printP() {
-  const prt = await getProductById({ productRows: '1,2,3'});
+  const prt = await getProductById({ productRows: "1,2,3" });
+  console.log(prt);
+}
+
+async function printCate() {
+  const prt = await getCategories();
   console.log(prt);
 }
 // newOrder(2)
-// printC();
+printCate();
+
+// newOrder(2)
 
 // db.prepare("DROP TABLE cart").run();
 // console.log(deleteUser("ando.thiago@g.com"));

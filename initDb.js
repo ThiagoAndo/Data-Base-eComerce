@@ -73,46 +73,5 @@ db.prepare(
 `
 ).run();
 
-async function initData({ fromDummy, product }) {
-  const stmt = db.prepare(`
-      INSERT INTO products VALUES (
-         @id,
-         @title,
-         @description,
-         @price,
-         @discountPercentage,
-         @rating,
-         @stock,
-         @brand,
-         @category,
-         @thumbnail
-      )
-   `);
-
-  const stmt2 = db.prepare(`
-      INSERT INTO images VALUES (
-         @itemId,
-         @image
-      )
-   `);
-  if (fromDummy) {
-    for (const product of products) {
-      stmt.run(product);
-      for (const img in product.images) {
-        stmt2.run({
-          itemId: product.id,
-          image: Object.values(product.images)[img],
-        });
-      }
-    }
-  } else {
-    stmt.run(product);
-    stmt2.run({
-      itemId: product.id,
-      image: Object.values(product.images)[img],
-    });
-  }
-}
-//  initData({fromDummy:true});
 
 // console.log(Object.values(products[0].images)[0]);

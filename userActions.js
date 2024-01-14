@@ -5,9 +5,13 @@ import getCurrentDate from "./actualDate.js";
 import { insertUser } from "./insertActions.js";
 
 export async function newUser(user) {
-  const currentDate = getCurrentDate();
-
-  insertUser(user);
+  const conf = await getUser(user.email_address);
+  if (conf.message) {
+    insertUser(user);
+    return { message: "user registered successfully" };
+  } else {
+    return { message: "user already registered" };
+  }
 }
 
 export async function getUser(email) {
