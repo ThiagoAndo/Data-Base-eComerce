@@ -1,7 +1,7 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { insertCard, insertProduct, insertUser } from "./insertActions.js";
-import getCurrentDate from "./actualDate.js";
+import getCurrentDate from "./library/actualDate.js";
 import {
   getUser,
   deleteUser,
