@@ -4,8 +4,11 @@ import pkg from "bcryptjs";
 const { hash, compare } = pkg;
 import uniqid from "uniqid";
 
+import { deleteProduct } from "./productActions.js";
+import { deleteCart } from "./cartActions.js";
 import getCurrentDate from "./actualDate.js";
 import { insertUser } from "./insertActions.js";
+import { deleteOrders } from "./ordersActions.js";
 
 export async function newUser(user) {
   user.id = uniqid();
@@ -36,11 +39,15 @@ export async function getUser(email, password) {
   }
 }
 
-export function deleteUser(email) {
-  const date = getCurrentDate();
+export function deleteUser(email, id) {
+  deleteOrders(id);
+  deleteCart(id);
+  deleteProduct(id);
 
   const stmt = db.prepare("DELETE  FROM users WHERE email_address = ?");
   const ret = stmt.run(email);
+  console.log("deleteUser======================================");
+
   console.log(ret);
 }
 

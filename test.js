@@ -1,6 +1,5 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
-
 import { insertCard, insertProduct, insertUser } from "./insertActions.js";
 import getCurrentDate from "./actualDate.js";
 import {
@@ -85,7 +84,7 @@ import { insertOrder } from "./insertActions.js";
 //   qnt: 1,
 // });
 
-// deleteUser("ando.thiago@gmal.com")
+deleteUser("ando.norimar@gmail.com", "1p0lrhxzer6");
 
 // newOrder("1p0lrhxzer6");
 
@@ -93,21 +92,29 @@ import { insertOrder } from "./insertActions.js";
 
 async function printU() {
   const prt = await getUser("ando.norimar@gmail.com", "54321");
+  console.log("printU==================");
+
   console.log(prt);
 }
 // printU();
 function printC() {
   const prt = getCart("1p0lrhxzer6", 1);
+  console.log("printC==================");
+
   console.log(prt);
 }
 // printC();
 async function printO() {
   const prt = await getOrders("1p0lrhxzer6");
+  console.log("printO==================");
+
   console.log(prt);
 }
 // printO();
 function printPId() {
   const prt = getProductById({ productRows: "1p0lrhxzer6" });
+  console.log("printPId==================");
+
   console.log(prt);
 }
 // printPId();

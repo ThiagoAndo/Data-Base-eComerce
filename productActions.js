@@ -1,8 +1,7 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { insertProduct } from "./insertActions.js";
-i
-
+import { deleteImage } from "./imageActions.js";
 export function getAllProducts() {
   const products = db.prepare(`SELECT * FROM products LIMIT 3`).all();
   return products;
@@ -40,6 +39,7 @@ export function getCategories() {
 }
 
 export function deleteProduct(id) {
+  deleteImage(id);
   const stmt = db.prepare("DELETE  FROM  products WHERE id = ?");
   const ret = stmt.run(id);
   console.log("product======================================");
