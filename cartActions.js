@@ -34,7 +34,14 @@ export async function updateCart({ user_id, item_id, qnt }) {
   }
 }
 
-export async function updateCartPurchased( creation_at ) {
+export async function updateCartPurchased(creation_at) {
   const stmt = db.prepare("UPDATE cart  SET  bought = ? WHERE creation_at = ?");
   const ret = stmt.run(1, creation_at);
+}
+
+export async function deleteCart(id) {
+  const stmt = db.prepare("DELETE  FROM  cart WHERE user_id = ?");
+  const ret = stmt.run(id);
+  console.log("cart ======================================");
+  console.log(ret);
 }

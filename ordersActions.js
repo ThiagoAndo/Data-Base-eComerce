@@ -13,3 +13,10 @@ export async function getOrders(id) {
 
   return orders;
 }
+
+export async function deleteOrders(id) {
+  const stmt = db.prepare("DELETE  FROM  orders WHERE user_id = ?");
+  const ret = stmt.run(id);
+  console.log("orders======================================");
+  console.log(ret);
+}

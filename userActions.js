@@ -46,17 +46,17 @@ export async function deleteUser(email) {
 
 export async function updateUserData({ newEmail, first, last, email }) {
   let stmt = db.prepare(
-    `UPDATE users  SET email_address=?,first_name=?, last_name=? WHERE email_address  = ?`
+    `UPDATE users  SET email_address=?,first_name=?, last_name=? WHERE email_address  = ?`,
   );
   const ret = stmt.run(newEmail, first, last, email);
   console.log(ret);
 }
 
-export async function changePassword(newPassword, email ) {
+export async function changePassword(newPassword, email) {
   const password = await hash(newPassword, 12);
 
   let stmt = db.prepare(
-    `UPDATE users  SET password =? WHERE email_address  = ?`
+    `UPDATE users  SET password =? WHERE email_address  = ?`,
   );
   const ret = stmt.run(password, email);
   console.log(ret);

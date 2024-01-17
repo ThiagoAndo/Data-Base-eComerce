@@ -20,7 +20,7 @@ export async function insertUser(user) {
       @password,
       @created_at
     )
-  `
+  `,
   ).run({
     ...user,
     created_at: currentDate,
@@ -45,7 +45,7 @@ export function insertCard({ creation_at, user_id, item_id, qnt }) {
       @bought,
       @creation_at
     )
-  `
+  `,
   ).run({
     user_id,
     item_id,
@@ -86,7 +86,7 @@ export async function insertOrder({ id = null, user_id }) {
       @paid_at,
       @total
     )
-  `
+  `,
   ).run({
     id,
     cart_id: creation_at,
@@ -124,7 +124,7 @@ export async function insertProduct(product) {
    `);
 
   for (const product of prts) {
-     product.id = String(product.id);
+    product.id = String(product.id);
     stmt.run(product);
     for (const img in product.images) {
       stmt2.run({
