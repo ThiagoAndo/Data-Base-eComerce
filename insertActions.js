@@ -124,6 +124,7 @@ export async function insertProduct(product) {
    `);
 
   for (const product of prts) {
+     product.id = String(product.id);
     stmt.run(product);
     for (const img in product.images) {
       stmt2.run({

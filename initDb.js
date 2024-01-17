@@ -5,7 +5,7 @@ const db = sql("e-comerce.db");
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS products (
-       id INTEGER PRIMARY KEY,
+       id TEXT NOT NULL  PRIMARY KEY,
        title TEXT NOT NULL UNIQUE,
        description TEXT NOT NULL,
        price FLOAT NOT NULL,
@@ -22,7 +22,7 @@ db.prepare(
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS images (
-       item_id INTEGER,
+       item_id TEXT NOT NULL ,
        image TEXT NOT NULL,
        FOREIGN KEY (item_id)
        REFERENCES products (id) 
@@ -47,7 +47,7 @@ db.prepare(
   `
    CREATE TABLE IF NOT EXISTS cart (
       user_id  TEXT NOT NULL ,
-      item_id  INTEGER,
+      item_id  TEXT NOT NULL ,
       qnt      INTEGER,
       bought   INTEGER,
       creation_at TIMESTAMP NOT NULL,

@@ -1,9 +1,14 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 
-import { insertCard, insertUser } from "./insertActions.js";
+import { insertCard, insertProduct, insertUser } from "./insertActions.js";
 import getCurrentDate from "./actualDate.js";
-import { getUser, deleteUser, updateUserData } from "./userActions.js";
+import {
+  getUser,
+  deleteUser,
+  updateUserData,
+  changePassword,
+} from "./userActions.js";
 import { getCart } from "./cartActions.js";
 import { updateCart } from "./cartActions.js";
 import { getOrders } from "./ordersActions.js";
@@ -12,6 +17,30 @@ import { getProductById, getCategories } from "./productActions.js";
 import { newUser } from "./userActions.js";
 import { insertOrder } from "./insertActions.js";
 
+const newProduct = [
+  {
+    id: 1,
+    title: "iPhone 9",
+    description: "An apple mobile which is nothing like apple",
+    price: 549,
+    discountPercentage: 12.96,
+    rating: 4.69,
+    stock: 94,
+    brand: "Apple",
+    category: "smartphones",
+    thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+    images: [
+      "https://i.dummyjson.com/data/products/1/1.jpg",
+      "https://i.dummyjson.com/data/products/1/2.jpg",
+      "https://i.dummyjson.com/data/products/1/3.jpg",
+      "https://i.dummyjson.com/data/products/1/4.jpg",
+      "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+    ],
+  },
+];
+
+// insertProduct(newProduct);
+
 // newUser({
 //   id: 1,
 //   email_address: "ando.thiago@g.com",
@@ -19,22 +48,21 @@ import { insertOrder } from "./insertActions.js";
 //   last_name: "Freitas",
 // });
 
-  newUser({
-    email_address: "ando.norimar@gmail.com",
-    first_name: "Norimar",
-    last_name: "Ando",
-    password: '123456'
-  })
+// newUser({
+//   email_address: "ando.norimar@gmail.com",
+//   first_name: "Norimar",
+//   last_name: "Ando",
+//   password: '123456'
+// })
 
-  
-  // updateUserData({
-  //   newEmail:'ando.thiago@gmal.com',
-  //   email: "ando.norimar@gmail.com",
-  //   first: "Thiago",
-  //   last: "Ando",
-  // })
+// updateUserData({
+//   newEmail:'ando.thiago@gmal.com',
+//   email: "ando.norimar@gmail.com",
+//   first: "Thiago",
+//   last: "Ando",
+// })
 
-  // updateCart({
+// updateCart({
 //   user_id: 2,
 //   item_id: 1,
 //   qnt: 3,
@@ -55,11 +83,13 @@ import { insertOrder } from "./insertActions.js";
 
 // newOrder(2)
 
+// changePassword("54321", "ando.norimar@gmail.com");
+
 async function printU() {
-  const prt = await getUser("ando.thiago@gmal.com");
+  const prt = await getUser("ando.norimar@gmail.com", "54321");
   console.log(prt);
 }
-// printU()
+// printU();
 async function printC() {
   const prt = await getCart(2, 0);
   console.log(prt);
@@ -74,7 +104,7 @@ async function printP() {
   const prt = await getProductById({ productRows: "1,2,3" });
   console.log(prt);
 }
-// printP()
+printP()
 
 async function printCate() {
   const prt = await getCategories();

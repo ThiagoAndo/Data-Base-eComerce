@@ -20,14 +20,19 @@ export async function newUser(user) {
   }
 }
 
-export async function getUser(email) {
+export async function getUser(email, password) {
   const user = db
     .prepare("SELECT * FROM users WHERE email_address = ?")
     .get(email);
   if (!user) {
     return { message: "Could not find user" };
   } else {
-    return user;
+    const isValid = await compare(password, user.password);
+    if (isValid) {
+      return user;
+    } else {
+      return { message: "Wrong Password" };
+    }
   }
 }
 
@@ -47,7 +52,7 @@ export async function updateUserData({ newEmail, first, last, email }) {
   console.log(ret);
 }
 
-export async function changePassword({ newPassword, email }) {
+export async function changePassword(newPassword, email ) {
   const password = await hash(newPassword, 12);
 
   let stmt = db.prepare(
