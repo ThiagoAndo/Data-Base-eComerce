@@ -4,26 +4,26 @@ import { getCart } from "./cartActions.js";
 import getCurrentDate from "./actualDate.js";
 import { getProductById, updateProductQnt } from "./productActions.js";
 import { updateCartPurchased } from "./cartActions.js";
+import { products } from "./productsData.js";
 
 export async function insertUser(user) {
   const currentDate = getCurrentDate();
   db.prepare(
     `
     INSERT INTO users
-      (id,email_address, first_name, last_name, created_at, deleted_at)
+      (email_address, first_name, last_name,id, password, created_at)
     VALUES (
-      null,
       @email_address,
       @first_name,
       @last_name,
-      @created_at,
-      @deleted_at
+      @id,
+      @password,
+      @created_at
     )
   `
   ).run({
     ...user,
     created_at: currentDate,
-    deleted_at: null,
   });
 }
 
@@ -95,11 +95,12 @@ export async function insertOrder({ id = null, user_id }) {
     total: sum,
   });
 
-   updateCartPurchased(creation_at);
+  updateCartPurchased(creation_at);
   updateProductQnt(cart);
 }
 
-export async function insertProduct({ fromDummy, product }) {
+export async function insertProduct(product) {
+  const prts = product || products;
   const stmt = db.prepare(`
       INSERT INTO products VALUES (
          @id,
@@ -121,21 +122,14 @@ export async function insertProduct({ fromDummy, product }) {
          @image
       )
    `);
-  if (fromDummy) {
-    for (const product of products) {
-      stmt.run(product);
-      for (const img in product.images) {
-        stmt2.run({
-          itemId: product.id,
-          image: Object.values(product.images)[img],
-        });
-      }
-    }
-  } else {
+
+  for (const product of prts) {
     stmt.run(product);
-    stmt2.run({
-      itemId: product.id,
-      image: Object.values(product.images)[img],
-    });
+    for (const img in product.images) {
+      stmt2.run({
+        itemId: product.id,
+        image: Object.values(product.images)[img],
+      });
+    }
   }
 }

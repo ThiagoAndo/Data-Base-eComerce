@@ -3,7 +3,7 @@ const db = sql("e-comerce.db");
 
 import { insertCard, insertUser } from "./insertActions.js";
 import getCurrentDate from "./actualDate.js";
-import { getUser, deleteUser } from "./userActions.js";
+import { getUser, deleteUser, updateUserData } from "./userActions.js";
 import { getCart } from "./cartActions.js";
 import { updateCart } from "./cartActions.js";
 import { getOrders } from "./ordersActions.js";
@@ -12,18 +12,26 @@ import { getProductById, getCategories } from "./productActions.js";
 import { newUser } from "./userActions.js";
 import { insertOrder } from "./insertActions.js";
 
-// insertUser({
+// newUser({
 //   id: 1,
 //   email_address: "ando.thiago@g.com",
 //   first_name: "Thiago",
 //   last_name: "Freitas",
 // });
 
-  // newUser({
-  //   id: null,
-  //   email_address: "ando.norimar@gmail.com",
-  //   first_name: "Norimar",
-  //   last_name: "Ando",
+  newUser({
+    email_address: "ando.norimar@gmail.com",
+    first_name: "Norimar",
+    last_name: "Ando",
+    password: '123456'
+  })
+
+  
+  // updateUserData({
+  //   newEmail:'ando.thiago@gmal.com',
+  //   email: "ando.norimar@gmail.com",
+  //   first: "Thiago",
+  //   last: "Ando",
   // })
 
   // updateCart({
@@ -43,11 +51,15 @@ import { insertOrder } from "./insertActions.js";
 //   qnt: 3,
 // });
 
+// deleteUser("ando.thiago@gmal.com")
+
+// newOrder(2)
+
 async function printU() {
-  const prt = await getUser("ando.norimar@gmail.com");
+  const prt = await getUser("ando.thiago@gmal.com");
   console.log(prt);
 }
-
+// printU()
 async function printC() {
   const prt = await getCart(2, 0);
   console.log(prt);
@@ -62,15 +74,14 @@ async function printP() {
   const prt = await getProductById({ productRows: "1,2,3" });
   console.log(prt);
 }
+// printP()
 
 async function printCate() {
   const prt = await getCategories();
   console.log(prt);
 }
-// newOrder(2)
-printCate();
+// printCate();
 
-// newOrder(2)
 
 // db.prepare("DROP TABLE cart").run();
 // console.log(deleteUser("ando.thiago@g.com"));
