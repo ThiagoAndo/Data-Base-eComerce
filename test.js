@@ -19,9 +19,9 @@ import { insertOrder } from "./insertActions.js";
 
 const newProduct = [
   {
-    id: 1,
-    title: "iPhone 9",
-    description: "An apple mobile which is nothing like apple",
+    id: "123456789",
+    title: "this is just a test",
+    description: "Again just a test",
     price: 549,
     discountPercentage: 12.96,
     rating: 4.69,
@@ -101,17 +101,16 @@ async function printO() {
 }
 
 async function printP() {
-  const prt = await getProductById({ productRows: "1,2,3" });
+  const prt = await getProductById({ productRows: "123456789" });
   console.log(prt);
 }
-printP()
+printP();
 
 async function printCate() {
   const prt = await getCategories();
   console.log(prt);
 }
 // printCate();
-
 
 // db.prepare("DROP TABLE cart").run();
 // console.log(deleteUser("ando.thiago@g.com"));
