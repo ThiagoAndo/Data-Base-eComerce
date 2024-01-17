@@ -1,7 +1,7 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { getCart } from "./cartActions.js";
-import getCurrentDate from "./library/actualDate.js";
+import getCurrentDate from "./utils/actualDate.js";
 import { getProductById, updateProductQnt } from "./productActions.js";
 import { updateCartPurchased } from "./cartActions.js";
 import { products } from "./productsData.js";
