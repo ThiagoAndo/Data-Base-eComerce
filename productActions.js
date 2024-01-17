@@ -1,6 +1,7 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { insertProduct } from "./insertActions.js";
+i
 
 export function getAllProducts() {
   const products = db.prepare(`SELECT * FROM products LIMIT 3`).all();

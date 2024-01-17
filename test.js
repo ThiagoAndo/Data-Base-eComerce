@@ -70,19 +70,19 @@ import { insertOrder } from "./insertActions.js";
 
 // updateCart({
 //   user_id: "1p0lrhxzer6",
-//   item_id: "1",
+//   item_id: "4",
 //   qnt: 3,
 // });
 
 // updateCart({
 //   user_id: "1p0lrhxzer6",
-//   item_id: "2",
-//   qnt: 3,
+//   item_id: "5",
+//   qnt: 1,
 // });
 // updateCart({
 //   user_id: "1p0lrhxzer6",
-//   item_id: "3",
-//   qnt: 3,
+//   item_id: "6",
+//   qnt: 1,
 // });
 
 // deleteUser("ando.thiago@gmal.com")
@@ -95,7 +95,7 @@ async function printU() {
   const prt = await getUser("ando.norimar@gmail.com", "54321");
   console.log(prt);
 }
-printU();
+// printU();
 function printC() {
   const prt = getCart("1p0lrhxzer6", 1);
   console.log(prt);
@@ -124,5 +124,5 @@ function printCate() {
 }
 // printCate();
 
-// db.prepare("DROP TABLE cart").run();
+// db.prepare("DROP TABLE orders").run();
 // console.log(deleteUser("ando.thiago@g.com"));
