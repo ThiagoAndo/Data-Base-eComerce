@@ -6,7 +6,7 @@ import { getProductById, updateProductQnt } from "./productActions.js";
 import { updateCartPurchased } from "./cartActions.js";
 import { products } from "./productsData.js";
 
-export async function insertUser(user) {
+export function insertUser(user) {
   const currentDate = getCurrentDate();
   db.prepare(
     `
@@ -55,51 +55,51 @@ export function insertCard({ creation_at, user_id, item_id, qnt }) {
   });
 }
 
-export async function insertOrder({ id = null, user_id }) {
+export function insertOrder({ id = null, user_id }) {
   let sum = 0;
   let currentDate = getCurrentDate();
-  const cart = await getCart(user_id, 0);
+  const cart = getCart(user_id, 0);
 
   let creation_at = cart[0].creation_at;
 
-  const getItemId = cart.map((item) => {
-    return item.item_id.toString();
-  });
+  let total = cart.reduce((sum, cart) => {
+    let [price] = getProductById({
+      tableCol: "price",
+      productRows: cart.item_id,
+    });
+    return (sum += price.price * cart.qnt);
+  }, 0);
+  console.log(total);
 
-  let values = await getProductById({
-    tableCol: "price",
-    productRows: getItemId.join(),
-  });
+  // for (var i = 0; i < values.length; i++) {
+  //   sum += values[i].price * cart[i].qnt;
+  // }
 
-  for (var i = 0; i < values.length; i++) {
-    sum += values[i].price * cart[i].qnt;
-  }
+  // db.prepare(
+  //   `
+  //   INSERT INTO orders
+  //     (invoice_id,cart_id, user_id, paid_at, total)
+  //   VALUES (
+  //     null,
+  //     @cart_id,
+  //     @user_id,
+  //     @paid_at,
+  //     @total
+  //   )
+  // `,
+  // ).run({
+  //   id,
+  //   cart_id: creation_at,
+  //   user_id,
+  //   paid_at: currentDate,
+  //   total: sum,
+  // });
 
-  db.prepare(
-    `
-    INSERT INTO orders
-      (invoice_id,cart_id, user_id, paid_at, total)
-    VALUES (
-      null,
-      @cart_id,
-      @user_id,
-      @paid_at,
-      @total
-    )
-  `,
-  ).run({
-    id,
-    cart_id: creation_at,
-    user_id,
-    paid_at: currentDate,
-    total: sum,
-  });
-
-  updateCartPurchased(creation_at);
-  updateProductQnt(cart);
+  // updateCartPurchased(creation_at);
+  // updateProductQnt(cart);
 }
 
-export async function insertProduct(product) {
+export function insertProduct(product) {
   const prts = product || products;
   const stmt = db.prepare(`
       INSERT INTO products VALUES (

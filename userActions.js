@@ -11,7 +11,7 @@ export async function newUser(user) {
   user.id = uniqid();
   user.password = await hash(user.password, 12);
 
-  const conf = await getUser(user.email_address);
+  const conf = getUser(user.email_address);
   if (conf.message) {
     insertUser(user);
     return { message: "user registered successfully" };
@@ -36,7 +36,7 @@ export async function getUser(email, password) {
   }
 }
 
-export async function deleteUser(email) {
+export function deleteUser(email) {
   const date = getCurrentDate();
 
   const stmt = db.prepare("DELETE  FROM users WHERE email_address = ?");
@@ -44,7 +44,7 @@ export async function deleteUser(email) {
   console.log(ret);
 }
 
-export async function updateUserData({ newEmail, first, last, email }) {
+export function updateUserData({ newEmail, first, last, email }) {
   let stmt = db.prepare(
     `UPDATE users  SET email_address=?,first_name=?, last_name=? WHERE email_address  = ?`,
   );

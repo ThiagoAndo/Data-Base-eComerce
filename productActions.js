@@ -2,23 +2,24 @@ import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { insertProduct } from "./insertActions.js";
 
-export async function getAllProducts() {
-  const products = db.prepare(`SELECT * FROM products`).all();
+export function getAllProducts() {
+  const products = db.prepare(`SELECT * FROM products LIMIT 3`).all();
+  return products;
 }
 
-export async function getProductById({ tableCol, productRows }) {
+export function getProductById({ tableCol, productRows }) {
   let cols = tableCol || "*";
   const products = db
     .prepare(`SELECT ${cols}  FROM products WHERE id= ?`)
     .all(productRows);
   if (!products) {
-    return { message: "No cart found" };
+    return { message: "No products found" };
   } else {
     return products;
   }
 }
 
-export async function updateProductQnt(carts) {
+export function updateProductQnt(carts) {
   carts.map((cart) => {
     let stmt = db.prepare(
       `UPDATE products  SET stock =((SELECT stock FROM products WHERE id =?)-?)  WHERE id  = ?`,
@@ -27,7 +28,7 @@ export async function updateProductQnt(carts) {
   });
 }
 
-export async function getCategories() {
+export function getCategories() {
   const categories = db
     .prepare(
       `SELECT category, COUNT(DISTINCT category) AS qnt FROM products GROUP BY category`,
@@ -37,13 +38,13 @@ export async function getCategories() {
   return categories;
 }
 
-export async function deleteProduct(id) {
+export function deleteProduct(id) {
   const stmt = db.prepare("DELETE  FROM  products WHERE id = ?");
   const ret = stmt.run(id);
   console.log("product======================================");
   console.log(ret);
 }
 
-export async function newProduct(newProduct) {
+export function newProduct(newProduct) {
   insertProduct(newProduct);
 }

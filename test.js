@@ -13,7 +13,12 @@ import { getCart } from "./cartActions.js";
 import { updateCart } from "./cartActions.js";
 import { getOrders } from "./ordersActions.js";
 import { newOrder } from "./ordersActions.js";
-import { getProductById, getCategories, newProduct } from "./productActions.js";
+import {
+  getProductById,
+  getCategories,
+  newProduct,
+  getAllProducts,
+} from "./productActions.js";
 import { newUser } from "./userActions.js";
 import { insertOrder } from "./insertActions.js";
 
@@ -82,34 +87,39 @@ import { insertOrder } from "./insertActions.js";
 
 // deleteUser("ando.thiago@gmal.com")
 
-// newOrder(2)
+// newOrder("1p0lrhxzer6");
 
 // changePassword("54321", "ando.norimar@gmail.com");
 
 async function printU() {
-  const prt = await getUser("ando.norimar@gmail.com", "123456");
+  const prt = await getUser("ando.norimar@gmail.com", "54321");
   console.log(prt);
 }
-
-// printU();
-async function printC() {
-  const prt = await getCart("1p0lrhxzer6", 0);
+printU();
+function printC() {
+  const prt = getCart("1p0lrhxzer6", 1);
   console.log(prt);
 }
 // printC();
 async function printO() {
-  const prt = await getOrders(2);
+  const prt = await getOrders("1p0lrhxzer6");
   console.log(prt);
 }
+// printO();
+function printPId() {
+  const prt = getProductById({ productRows: "1p0lrhxzer6" });
+  console.log(prt);
+}
+// printPId();
 
 async function printP() {
-  const prt = await getProductById({ productRows: "1p0lrhxzer6" });
+  const prt = await getAllProducts();
   console.log(prt);
 }
-printP();
+// printP();
 
-async function printCate() {
-  const prt = await getCategories();
+function printCate() {
+  const prt = getCategories();
   console.log(prt);
 }
 // printCate();
