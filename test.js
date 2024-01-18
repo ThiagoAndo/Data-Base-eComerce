@@ -1,7 +1,7 @@
 import sql from "better-sqlite3";
 const db = sql("e-comerce.db");
 import { insertCard, insertProduct, insertUser } from "./insertActions.js";
-import getCurrentDate from "./utils/actualDate.js";
+import getCurrentDate from "./utils/functions.js";
 import {
   getUser,
   deleteUser,
@@ -53,12 +53,12 @@ import { insertOrder } from "./insertActions.js";
 
 // });
 
-// newUser({
+// console.log(newUser({
 //   email_address: "ando.norimar@gmail.com",
 //   first_name: "Norimar",
 //   last_name: "Ando",
-//   password: '123456'
-// })
+//   password: '12345678'
+// }))
 
 // updateUserData({
 //   newEmail:'ando.thiago@gmal.com',
@@ -84,19 +84,19 @@ import { insertOrder } from "./insertActions.js";
 //   qnt: 1,
 // });
 
-deleteUser("ando.norimar@gmail.com", "1p0lrhxzer6");
+// deleteUser("ando.norimar@gmail.com", "1p0lrhxzer6");
 
 // newOrder("1p0lrhxzer6");
 
 // changePassword("54321", "ando.norimar@gmail.com");
 
 async function printU() {
-  const prt = await getUser("ando.norimar@gmail.com", "54321");
+  const prt = await getUser("ando.norimar@gmail.com", "12345678");
   console.log("printU==================");
 
   console.log(prt);
 }
-// printU();
+printU();
 function printC() {
   const prt = getCart("1p0lrhxzer6", 1);
   console.log("printC==================");

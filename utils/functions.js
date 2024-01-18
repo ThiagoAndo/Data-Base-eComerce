@@ -11,7 +11,7 @@ export default function getCurrentDate() {
   return currentDate;
 }
 
-function isEmailValid(email) {
+export function isEmailValid(email) {
   let match = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   if (email.match(match)) {
     return true;
@@ -20,7 +20,7 @@ function isEmailValid(email) {
   }
 }
 
-function isNameValid(name) {
+export function isNameValid(name) {
   let regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
   if (!regName.test(name)) {
     return false;
@@ -29,12 +29,10 @@ function isNameValid(name) {
   }
 }
 
-function isPasswordValid(password){
+export function isPasswordValid(password){
   if (password.trim().length >=8) {
     return true;
   } else {
     return false;
   }
 }
-
-console.log(isPasswordValid('12345678'))

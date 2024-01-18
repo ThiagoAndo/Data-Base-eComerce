@@ -6,19 +6,37 @@ import uniqid from "uniqid";
 
 import { deleteProduct } from "./productActions.js";
 import { deleteCart } from "./cartActions.js";
-import getCurrentDate from "./utils/actualDate.js";
+import getCurrentDate from "./utils/functions.js";
 import { insertUser } from "./insertActions.js";
 import { deleteOrders } from "./ordersActions.js";
+import {
+  isEmailValid,
+  isNameValid,
+  isPasswordValid,
+} from "./utils/functions.js";
 
 export async function newUser(user) {
+  const { email_address, first_name, last_name, password } = user;
+  let msn = "";
+  if (!isEmailValid(email_address)) {
+    return { message: "Email is not valid!" };
+  } else if (!isNameValid(first_name + " " + last_name)) {
+    return { message: "Name is not valid!" };
+  } else if (!isPasswordValid(password)) {
+    return { message: "Password is too short!" };
+  }
+
   user.id = uniqid();
   user.password = await hash(user.password, 12);
 
-  const conf = getUser(user.email_address);
+  const conf = await getUser(user.email_address);
   if (conf.message) {
     insertUser(user);
+    console.log('user registered successfully')
     return { message: "user registered successfully" };
   } else {
+    console.log("user already registered")
+
     return { message: "user already registered" };
   }
 }
